@@ -1,26 +1,26 @@
-# 💊 Prescription Fraud Detection – Data Analytics & Preprocessing Project
+# 💊🏥 Healthcare Prescription Dataset – Analytics, Preprocessing & ML Classification
 
-This project performs full data exploration, preprocessing, aggregation, fraud trend analysis, statistical analysis, visualization, and feature engineering on a medical prescription dataset. The goal is to prepare the data so that fraud-prediction ML models can be built later.
+This project analyzes a medical prescription dataset, detects suspicious patterns, performs preprocessing and statistical analysis, and applies machine-learning for predictive insights.  
+The dataset includes hospital-wide prescription activity, patient demographics, doctor information, medication types, costs and a fraud-risk label.
 
 ---
 
-## 🎯 Project Purpose
+## 🎯 Objective
 
-- Understand dataset and detect suspicious patterns
-- Clean and transform raw data (text → numeric)
-- Check missing values and statistical trends
-- Identify fraud frequency per month
-- Prepare final dataset for ML (scaled + encoded)
-- Visualize cost behavior and anomalies
+- Understand and analyze healthcare prescription data
+- Detect fraud-risk patterns in medical billing and prescriptions
+- Clean & preprocess raw data (text → numeric, scaling, encoding)
+- Perform statistical analysis on Total Cost and identify anomalies
+- Study seasonal/monthly variations in fraudulent claims
+- Train machine-learning models to predict healthcare performance outcomes
 
 ---
 
 ## 📂 Dataset Overview
 
-Dataset Shape: 500 rows × 25 columns  
-Source Notebook: **projectp2 – Jupyter Notebook** 
+Dataset Shape: **500 rows × 25 columns**
 
-### 📌 Sample Raw Dataset Output (first 5 rows)
+### 📌 Sample Dataset Output (first 5 rows)
 
 Prescription_ID | Patient_ID | Doctor_ID | Pharmacy_ID | Drug_Name | Drug_Category | Dosage | Prescription_Date | Refill_Count | Insurance_Claim
 --------------- | ---------- | ---------- | ----------- | -------- | ------------- | ------ | ----------------- | ------------ | ----------------
@@ -30,17 +30,27 @@ Prescription_ID | Patient_ID | Doctor_ID | Pharmacy_ID | Drug_Name | Drug_Catego
 4 | 1509 | 704 | 998 | Lisinopril | Hypertension | 342mg | 2024-02-06 | 5 | 1
 5 | 1804 | 853 | 551 | Oxycodone | Antibiotic | 180mg | 2024-01-11 | 5 | 1
 
+### Key Columns
+
+- Patient & Doctor info
+- Drug name, category, dosage
+- Insurance claim flag
+- Total cost
+- Health condition, demographics
+- Fraudulent Claim (target)
+- Refill count & duration
+
 ---
 
 ## 🧹 Data Preprocessing Summary
 
-Performed inside notebook 
+Actions performed:
 
-- Dosage text like “98mg” converted → numeric (98)
-- Missing values checked → dataset had **0 missing entries**
-- Numerical values (Cost, Age, Dosage, Days_Supply) transformed using scaling
-- Categorical columns encoded into multiple numeric dummy columns
-- Final transformed dataset contained **132 columns**
+- Converted `"98mg"` → **98**
+- Checked missing values → **none found**
+- Encoded categorical columns → Drug_Name, Doctor_Specialty, Patient_Health_Condition, Pharmacy_Location
+- Scaled numeric columns → Total_Cost, Age, Dosage, Days_Supply
+- Final processed dataset: **132 columns (from 25)** → ML-ready
 
 ---
 
@@ -61,22 +71,22 @@ Month | Fraudulent Claims
 2024-11 | 24
 2024-12 | 25
 
-📌 Interpretation: Fraud is highest in **January, November, December** → seasonal pattern of insurance misuse
+📌 Insight → Fraud is highest in **January, November & December**, indicating seasonal exploitation.
 
 ---
 
-## 📐 Statistical Analysis (As Displayed in Notebook)
+## 📐 Statistical Analysis – Total Cost
 
-Mean of Total Cost: 513.82604  
-Median of Total Cost: 510.445  
-Mode of Total Cost: 164.62  
-IQR (Interquartile Range): 466.5450000000001  
-Variance: 78333.47627566973  
-Standard Deviation: 279.88118242509574  
-Coefficient of Variation (CV): 54.47%  
-Mean Absolute Deviation (MAD): 241.07819247999996  
+Mean: 513.83  
+Median: 510.44  
+Mode: 164.62  
+IQR: 466.54  
+Variance: 78,333.47  
+Standard Deviation: 279.88  
+Coefficient of Variation: 54.47%  
+MAD: 241.08  
 
-### Markdown Table Version
+### Tabular Summary
 
 Metric | Value
 ------ | -----
@@ -85,56 +95,74 @@ Median | 510.44
 Mode | 164.62
 IQR | 466.54
 Variance | 78,333.47
-Standard Deviation | 279.88
-Coefficient of Variation | 54.47%
-Mean Absolute Deviation | 241.08
+St. Dev | 279.88
+CV | 54.47%
+MAD | 241.08
 
 ---
 
-## 📊 Doctor-Level Prescription Summary
+## 👨‍⚕️ Doctor-Level Suspicion Summary
 
-Doctor_ID | Total_Cost | Prescription_Count | Fraudulent_Claim_Count
---------- | ---------- | ------------------ | ----------------------
+Doctor_ID | Total Cost | Prescription Count | Fraud Count
+----------|------------|-------------------|-------------
 101 | 1022.84 | 2 | 0
 105 | 1725.94 | 2 | 1
 106 | 235.62 | 1 | 1
 110 | 389.34 | 1 | 0
 
----
-
-## 🎨 Visualizations Performed
-
-- Box Plot of Total Cost → detects extreme billings (possible fraud)
-- Histogram of Total Cost → cost distribution shape
-- Monthly fraud graph
+🩺 Doctors with **high count + high fraud claims** become red-flag indicators.
 
 ---
 
-## 🧠 Final Dataset Result
+## 🤖 Machine-Learning Classification
 
-After preprocessing:
+Random Forest models were trained to analyze prescription-based hospital outcome performance categories.
 
-- Original Columns: 25
-- Final Columns (Encoded): **132**
-- Dataset is now **fully numeric**
-- Ready for ML classification model training
+### Performance Summary
+
+Outcome Metric | Accuracy | F1-Score
+-------------- | -------- | --------
+Safety of care | 0.733 | 0.733
+Patient experience | 0.722 | 0.723
+Readmission | 0.718 | 0.729
+Efficient use of imaging | 0.653 | 0.682
+Mortality | 0.631 | 0.671
+Timeliness of care | 0.603 | 0.584
+Effectiveness of care | 0.572 | 0.654
+
+✔ Acceptable ≥ 0.70  
+⚠ Below 0.65 → suggests dataset imbalance & missing contextual hospital performance data
 
 ---
 
-## 🚀 Suggested Next Steps
+## 🧠 Outputs Generated
 
-Task | Reason
----- | ------
-Train ML Model (RandomForest / Logistic Regression / XGBoost) | Predict fraud
-Evaluate Accuracy, Precision, Recall, ROC-AUC | Validate performance
-Save trained model using joblib | Deployment use
-Deploy REST API (FastAPI / Flask) | Real-time fraud check
-Streamlit dashboard | Visualization for pharma companies
+- Cleaned & encoded dataset (CSV export)
+- Fraud-trend tables & summaries
+- Statistical summary for Total Cost
+- Visualizations  
+  - Box Plot (cost)  
+  - Histogram (cost distribution)  
+  - Monthly fraud line chart  
+- ML models saved (.joblib)
+- Accuracy reports for hospital metrics
+
+---
+
+## 🚀 Possible Enhancements
+
+Add | Benefit
+----|--------
+Fraud-prediction ML model (classification) | Automate anomaly detection
+Deploy via Flask / FastAPI | Real-time fraud detection API
+Streamlit dashboard | Visual analytics tool
+Add doctor-risk scoring | Rank doctors by suspicious activity
 
 ---
 
 ## 👤 Author
 
-Prescription Fraud Detection – Academic Data Analytics  
-Python | Pandas | NumPy | Seaborn | scikit-learn
+Healthcare Prescription Data Analytics & ML  
+Tools: Python, Pandas, NumPy, Matplotlib, Scikit-Learn, Seaborn
+
 
